@@ -6,12 +6,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Windows.Forms;
+using Othello.AI;
 
 namespace Othello
 {
     public enum Turn { W, B };
     class Game
     {
+        Searcher searcher;
         /// <summary>
         /// Ktory gracz ma ruch
         /// </summary>
@@ -62,8 +64,10 @@ namespace Othello
         public Game(Game_Panel gamePanel, int boardSize, string FuncW, string FuncB, bool test_mode)
         {
             
-            whitePlayer = new Player(FuncW);
-            blackPlayer = new Player(FuncB);
+            whitePlayer = new Player(FuncW,"W");
+            blackPlayer = new Player(FuncB,"B");
+            whitePlayer.setOpponent(blackPlayer);
+            blackPlayer.setOpponent(whitePlayer);
 
             this.gamePanel = gamePanel;
             this.boardSize = boardSize;
@@ -150,7 +154,34 @@ namespace Othello
             //w przeciwnym przypadku naprzemienne uruchamianie graczy
             else
             {
-                Thread start = new Thread(Start);
+                searcher = new Searcher(tileSize,boardSize);
+                Point point;
+                //  while (whitePlayer.Points + blackPlayer.Points != (5 * boardSize * boardSize / 9))
+                {
+
+                    switch (turn)
+                    {
+                        case Turn.W:
+                            // p = whitePlayer.Move(Tiles);
+                            point = searcher.simpleSearch(Tiles, whitePlayer, 3).Point;
+                            if (point != null)
+                            {
+                                MessageBox.Show("RESULT = " + point.X + ", " + point.Y);
+                            }
+                            break;
+                        case Turn.B:
+                            // p = blackPlayer.Move(Tiles);
+                            point = searcher.simpleSearch(Tiles, blackPlayer, 3).Point;
+                            if (point != null)
+                            {
+                                MessageBox.Show("RESULT = " + point.X + ", " + point.Y);
+                            }
+                            break;
+
+
+                    }
+                    //  Thread start = new Thread(Start);
+                }
             }
 
             updateGUI();
@@ -629,25 +660,37 @@ namespace Othello
         /// </summary>
         public void Start()
         {
-            while (whitePlayer.Points + blackPlayer.Points != (5 * boardSize * boardSize / 9))
+            Point p;
+            //  while (whitePlayer.Points + blackPlayer.Points != (5 * boardSize * boardSize / 9))
             {
-                Panel p = null;
+
                 switch (turn)
                 {
                     case Turn.W:
-                        p = whitePlayer.Move(Tiles);
+                        // p = whitePlayer.Move(Tiles);
+                        p = searcher.simpleSearch(Tiles, whitePlayer, 3).Point;
+                        if (p != null)
+                        {
+                            MessageBox.Show("RESULT = " + p.X + ", " + p.Y);
+                        }
                         break;
                     case Turn.B:
-                       p = blackPlayer.Move(Tiles);
+                        // p = blackPlayer.Move(Tiles);
+                        p = searcher.simpleSearch(Tiles, blackPlayer, 3).Point;
+                        if (p != null)
+                        {
+                            MessageBox.Show("RESULT = " + p.X + ", " + p.Y);
+                        }
                         break;
 
 
                 }
-                Thread.Sleep(1000);
+                // Thread.Sleep(1000);
 
-               // OnPointChoose(p);
-            
-               
+                // OnPointChoose(p);
+
+
+                // }
             }
         }
 

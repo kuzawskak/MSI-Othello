@@ -44,6 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AI\Searcher.cs" />
+    <Compile Include="AI\SearchResult.cs" />
     <Compile Include="CornersOccupation.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

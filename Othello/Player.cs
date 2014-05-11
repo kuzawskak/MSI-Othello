@@ -10,6 +10,9 @@ namespace Othello
 {
     class Player
     {
+        public string Color { get; set; }
+        public string OpponentColor { get; set; }
+        public Player Opponent;
         public int Points { get; set; }
 
         private Heuristic HeuristicFunc;
@@ -19,8 +22,17 @@ namespace Othello
             return HeuristicFunc.Move(Tiles);
         }
 
-        public Player(string heuristic)
+        public void setOpponent(Player opponent)
         {
+            Opponent = opponent;
+        }
+
+        public Player(string heuristic,string color)
+        {
+            
+            Color = color;
+            OpponentColor = color == "W" ? "B" : "W";
+           
             switch (heuristic)
             {
                 case "MAX LICZBA PUNKTOW":
