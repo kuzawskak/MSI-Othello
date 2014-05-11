@@ -94,9 +94,7 @@ namespace Othello.AI
         }
 
 
-     
-
-
+   
 
         bool checkIfAvailable(Panel[,] Tiles, Panel p, string tag)
         {
@@ -449,7 +447,7 @@ namespace Othello.AI
             {
                 return new SearchResult(null, Evaluate(board, player));
             }
-            else /* wiecej do sparwdzenia*/
+            else /* wiecej do sprawdzenia*/
             {
                 List<Point> possible_moves = Explore(board, player.Color);
                 SearchResult best = new SearchResult(null, alpha);
@@ -476,7 +474,7 @@ namespace Othello.AI
                     }
                     else
                     { /* gra trwa nadal - brak ruchow do sprawdzenia*/
-                        best = Search(board, player.Opponent, -beta, -alpha, depth - 1);
+                        best = Search(board, player.Opponent, -beta, -alpha, depth - 1).negate();
                     }
                 }
                 else
@@ -495,7 +493,7 @@ namespace Othello.AI
                             }
                            // (Panel[,])board.Clone();
                         makeMove(ref subBoard, p, player.Color);
-                        int score = Search(subBoard, player.Opponent, -beta, -alpha, depth - 1).Score;
+                        int score = Search(subBoard, player.Opponent, -beta, -alpha, depth - 1).negate().Score;
                         if (alpha < score)
                         {
                             alpha = score;
@@ -547,7 +545,7 @@ namespace Othello.AI
                     }
                     else
                     {
-                        best = simpleSearch(board, player.Opponent, depth - 1);
+                        best = simpleSearch(board, player.Opponent, depth - 1).negate();
                     }
                 }
                 else
@@ -565,7 +563,7 @@ namespace Othello.AI
 
                             }
                         makeMove(ref subBoard, p, player.Color);
-                        int score = simpleSearch(subBoard, player.Opponent, depth - 1).Score;
+                        int score = simpleSearch(subBoard, player.Opponent, depth - 1).negate().Score;
                         if (best.Score < score)
                         {
                             best = new SearchResult(p, score);

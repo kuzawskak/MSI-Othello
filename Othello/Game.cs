@@ -159,51 +159,9 @@ namespace Othello
             else
             {
                 searcher = new Searcher(tileSize, boardSize);
-
-                // while (whitePlayer.Points + blackPlayer.Points != (5 * boardSize * boardSize / 9)&&whitePlayer.Points!=0&&blackPlayer.Points!=0)
-                /*  {
-                     
-                    Point point = new Point(-1, -1);
-                    switch (turn)
-                    {
-                        case Turn.W:
-                            // p = whitePlayer.Move(Tiles);
-                            point = searcher.simpleSearch(Tiles, whitePlayer, 1).Point;
-
-                            if (point != null)
-                            {
-                                MessageBox.Show("RESULT = " + point.X + ", " + point.Y);
-                            }
-
-                            break;
-                        case Turn.B:
-                            // p = blackPlayer.Move(Tiles);
-                            point = searcher.simpleSearch(Tiles, blackPlayer, 1).Point;
-                            if (point != null)
-                            {
-                                MessageBox.Show("RESULT = " + point.X + ", " + point.Y);
-                            }
-                            break;
-
-                    
-                    }
-              
-                     if(point.X>0&&point.Y>0)
-                    Tile_Choose(point);*/
-
-
                 Start();
-                // black.Join();
-                //white.Join();
-                // gamePanel.Refresh();
-                //Thread.Sleep(1000);
-
-
             }
 
-            //Thread start = new Thread(Start);
-            //Thread.Sleep(1000);
-            // updateGUI();
         }
 
         public void Start()
@@ -213,14 +171,12 @@ namespace Othello
             black.Start();
             white.Start();
             //black.Join();
-           // white.Join();
-           // while (whitePlayer.Points + blackPlayer.Points != (5 * boardSize * boardSize / 9) && whitePlayer.Points != 0 && blackPlayer.Points != 0)
+           //  white.Join();
+            // while (whitePlayer.Points + blackPlayer.Points != (5 * boardSize * boardSize / 9) && whitePlayer.Points != 0 && blackPlayer.Points != 0)
             {
-                
+
             }
         }
-
-
 
         private void Tile_Enter(object sender, EventArgs e)
         {
@@ -234,12 +190,8 @@ namespace Othello
 
         private void Tile_Leave(object sender, EventArgs e)
         {
-
             ((Panel)sender).BorderStyle = BorderStyle.None;
-
-
         }
-
 
         /// <summary>
         /// Reakcja na wybor panelu do ruchu
@@ -669,8 +621,6 @@ namespace Othello
         }
 
 
-
-
         private void Tile_Choose(Point point)
         {
 
@@ -678,8 +628,6 @@ namespace Othello
             int x = point.X;
             int y = point.Y;
             Panel chosen_panel = Tiles[x, y];
-
-
 
             if (turn == Turn.W)
             {
@@ -703,35 +651,23 @@ namespace Othello
 
         }
 
-
-
-
-
-
-
-
-
         /// <summary>
         /// aktualizacja punktow na panelu gry
         /// </summary>
         private void updateGUI()
         {
-            
+
             gamePanel.whitePoints.Text = whitePlayer.Points.ToString();
             gamePanel.blackPoints.Text = blackPlayer.Points.ToString();
             if (turn == Turn.W)
             {
                 gamePanel.whitePoints.BackColor = Color.Red;
                 gamePanel.blackPoints.BackColor = Color.Transparent;
-               // gamePanel.pictureBoxBlack.BorderStyle = BorderStyle.None;
-               // gamePanel.pictureBoxWhite.BorderStyle = BorderStyle.Fixed3D;
             }
             else
             {
                 gamePanel.whitePoints.BackColor = Color.Transparent;
                 gamePanel.blackPoints.BackColor = Color.Red;
-               // gamePanel.pictureBoxBlack.BorderStyle = BorderStyle.Fixed3D; ;
-               // gamePanel.pictureBoxWhite.BorderStyle = BorderStyle.None;
             }
 
             checkIfFinished();
@@ -742,49 +678,37 @@ namespace Othello
         /// </summary>
         public void StartBlack()
         {
-              while (whitePlayer.Points + blackPlayer.Points != (5 * boardSize * boardSize / 9))
-              { Point point = new Point(-1, -1);
-          //  while (game_on)
-           // {
+            while (whitePlayer.Points + blackPlayer.Points != (5 * boardSize * boardSize / 9))
+            {
+                Point point = new Point(-1, -1);
                 BlackSemaphore.WaitOne();
-               // if (turn == Turn.B)
                 Thread.Sleep(1000);
-                    point = searcher.simpleSearch(Tiles, blackPlayer, 1).Point;
+                point = searcher.simpleSearch(Tiles, blackPlayer, 3).Point;
                 if (point.X > 0 && point.Y > 0)
                     Tile_Choose(point);
                 updateGUI();
-               // if (MessageBox.Show("RESULT = " + point.X + ", " + point.Y) == DialogResult.OK)
-                {
-                    turn = Turn.W;
-                    WhiteSemaphore.Release();
-                }
+
+                turn = Turn.W;
+                WhiteSemaphore.Release();
             }
             game_on = false;
-            
-
         }
 
 
         public void StartWhite()
         {
-            //  while (whitePlayer.Points + blackPlayer.Points != (5 * boardSize * boardSize / 9))
-            Point point = new Point(-1, -1);
-           while (whitePlayer.Points + blackPlayer.Points != (5 * boardSize * boardSize / 9) && whitePlayer.Points != 0 && blackPlayer.Points != 0)
+           
+            while (whitePlayer.Points + blackPlayer.Points != (5 * boardSize * boardSize / 9) && whitePlayer.Points != 0 && blackPlayer.Points != 0)
             {
                 WhiteSemaphore.WaitOne();
+                Point point = new Point(-1, -1);
                 Thread.Sleep(1000);
-                point = searcher.simpleSearch(Tiles, whitePlayer, 1).Point;
-
+                point = searcher.simpleSearch(Tiles, whitePlayer, 3).Point;
                 if (point.X > 0 && point.Y > 0)
                     Tile_Choose(point);
-                    updateGUI();
-                //if (MessageBox.Show("RESULT = " + point.X + ", " + point.Y) == DialogResult.OK)
-                {
-                    turn = Turn.B;
-                    BlackSemaphore.Release();
-                    
-                }
-
+                updateGUI();
+                turn = Turn.B;
+                BlackSemaphore.Release();
             }
             game_on = false;
 
