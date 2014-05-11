@@ -12,8 +12,10 @@ namespace Othello.AI
     {
         int tileSize;
         int tileCount;
+        Panel[,] subBoard;
         public Searcher(int tileSize, int tileCount)
         {
+            this.subBoard = new Panel[tileCount, tileCount];
             this.tileSize = tileSize;
             this.tileCount = tileCount;
         }
@@ -482,7 +484,7 @@ namespace Othello.AI
 
                     foreach (Point p in possible_moves)
                     {
-                        Panel[,] subBoard = new Panel[tileCount, tileCount];
+                       // Panel[,] subBoard = new Panel[tileCount, tileCount];
                         for(int i=0;i<tileCount;i++)
                             for (int j = 0; j < tileCount; j++)
                             {
@@ -493,7 +495,7 @@ namespace Othello.AI
                             }
                            // (Panel[,])board.Clone();
                         makeMove(ref subBoard, p, player.Color);
-                        int score = Search(subBoard, player.Opponent, -beta, -alpha, depth - 1).negate().Score;
+                        int score = Search( subBoard, player.Opponent, -beta, -alpha, depth - 1).negate().Score;
                         if (alpha < score)
                         {
                             alpha = score;
@@ -552,8 +554,10 @@ namespace Othello.AI
                 {
                     foreach (Point p in possible_moves)
                     {
-                        //Panel[,] subBoard = (Panel[,])board.Clone();
-                        Panel[,] subBoard = new Panel[tileCount, tileCount];
+                        //Panel[,] 
+                      //  subBoard = (Panel[,])board.Clone();
+                      //  /*Panel[,] */
+                    subBoard = new Panel[tileCount, tileCount];
                         for (int i = 0; i < tileCount; i++)
                             for (int j = 0; j < tileCount; j++)
                             {
@@ -571,7 +575,7 @@ namespace Othello.AI
 
                     }
                 }
-                return best;
+                return new SearchResult(best.Point,best.Score);
             }
 
         }

@@ -14,6 +14,7 @@ namespace Othello
     {
         public Form1()
         {
+            CheckForIllegalCrossThreadCalls = false;
             InitializeComponent();
         }
 

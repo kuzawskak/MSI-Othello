@@ -656,7 +656,7 @@ namespace Othello
         /// </summary>
         private void updateGUI()
         {
-
+            
             gamePanel.whitePoints.Text = whitePlayer.Points.ToString();
             gamePanel.blackPoints.Text = blackPlayer.Points.ToString();
             if (turn == Turn.W)
@@ -684,7 +684,7 @@ namespace Othello
                 BlackSemaphore.WaitOne();
                 Thread.Sleep(1000);
                 point = searcher.simpleSearch(Tiles, blackPlayer, 3).Point;
-                if (point.X > 0 && point.Y > 0)
+                if (point.X >= 0 && point.Y >= 0)
                     Tile_Choose(point);
                 updateGUI();
 
@@ -704,7 +704,7 @@ namespace Othello
                 Point point = new Point(-1, -1);
                 Thread.Sleep(1000);
                 point = searcher.simpleSearch(Tiles, whitePlayer, 3).Point;
-                if (point.X > 0 && point.Y > 0)
+                if (point.X >= 0 && point.Y >= 0)
                     Tile_Choose(point);
                 updateGUI();
                 turn = Turn.B;
