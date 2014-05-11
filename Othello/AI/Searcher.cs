@@ -24,8 +24,6 @@ namespace Othello.AI
         {
 
             int count = 0;
-
-
             for (int i = 0; i < tileCount; i++)
                 for (int j = 0; j < tileCount; j++)
                 {
@@ -67,15 +65,13 @@ namespace Othello.AI
             switch (p.Color)
             {
                 case "W":
-                    return white_panels.Capacity = black_panels.Capacity;
+                    return white_panels.Capacity - black_panels.Capacity;
                 case "B":
-                    return black_panels.Capacity = white_panels.Capacity;
+                    return black_panels.Capacity - white_panels.Capacity;
             }
 
             return 0;
         }
-
-
 
 
 
@@ -100,9 +96,13 @@ namespace Othello.AI
         }
 
 
+     
+
+
+
         bool checkIfAvailable(Panel[,] Tiles, Panel p, string tag)
         {
-            if (p.Tag.ToString() != "G") return false;
+            if (p.Tag.ToString() != "G" ) return false;
             int x = p.Location.X / tileSize;
             int y = p.Location.Y / tileSize;
             int i, j;
@@ -375,7 +375,7 @@ namespace Othello.AI
             }
 
             //Reverse
-            if (y_down >= 0)
+        /*    if (y_down >= 0)
             {
                 for (i = y + 1; i < y_down; i++)
                 {
@@ -440,7 +440,7 @@ namespace Othello.AI
                 {
                     board[i, j].Tag = color;
                 }
-            }
+            }*/
 
 
         }
