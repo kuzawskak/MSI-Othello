@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
 
-
-//TODOD zmienic check if available
 namespace Othello.AI
 {
     class Searcher
@@ -375,7 +373,7 @@ namespace Othello.AI
             }
 
             //Reverse
-        /*    if (y_down >= 0)
+            if (y_down >= 0)
             {
                 for (i = y + 1; i < y_down; i++)
                 {
@@ -440,7 +438,7 @@ namespace Othello.AI
                 {
                     board[i, j].Tag = color;
                 }
-            }*/
+            }
 
 
         }
@@ -486,7 +484,16 @@ namespace Othello.AI
 
                     foreach (Point p in possible_moves)
                     {
-                        Panel[,] subBoard = (Panel[,])board.Clone();
+                        Panel[,] subBoard = new Panel[tileCount, tileCount];
+                        for(int i=0;i<tileCount;i++)
+                            for (int j = 0; j < tileCount; j++)
+                            {
+                                subBoard[i, j] = new Panel();
+                                subBoard[i, j].Bounds = board[i, j].Bounds;
+                                subBoard[i, j].Tag = board[i, j].Tag;
+
+                            }
+                           // (Panel[,])board.Clone();
                         makeMove(ref subBoard, p, player.Color);
                         int score = Search(subBoard, player.Opponent, -beta, -alpha, depth - 1).Score;
                         if (alpha < score)
@@ -547,7 +554,16 @@ namespace Othello.AI
                 {
                     foreach (Point p in possible_moves)
                     {
-                        Panel[,] subBoard = (Panel[,])board.Clone();
+                        //Panel[,] subBoard = (Panel[,])board.Clone();
+                        Panel[,] subBoard = new Panel[tileCount, tileCount];
+                        for (int i = 0; i < tileCount; i++)
+                            for (int j = 0; j < tileCount; j++)
+                            {
+                                subBoard[i, j] = new Panel();
+                                subBoard[i, j].Bounds = board[i, j].Bounds;
+                                subBoard[i, j].Tag = board[i, j].Tag;
+
+                            }
                         makeMove(ref subBoard, p, player.Color);
                         int score = simpleSearch(subBoard, player.Opponent, depth - 1).Score;
                         if (best.Score < score)

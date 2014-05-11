@@ -13,6 +13,9 @@ namespace Othello
     public enum Turn { W, B };
     class Game
     {
+        Semaphore WhiteSemaphore;
+        Semaphore BlackSemaphore;
+        bool game_on = true;
         Searcher searcher;
         /// <summary>
         /// Ktory gracz ma ruch
@@ -63,9 +66,10 @@ namespace Othello
 
         public Game(Game_Panel gamePanel, int boardSize, string FuncW, string FuncB, bool test_mode)
         {
-            
-            whitePlayer = new Player(FuncW,"W");
-            blackPlayer = new Player(FuncB,"B");
+            WhiteSemaphore = new Semaphore(0, 1);
+            BlackSemaphore = new Semaphore(1, 1);
+            whitePlayer = new Player(FuncW, "W");
+            blackPlayer = new Player(FuncB, "B");
             whitePlayer.setOpponent(blackPlayer);
             blackPlayer.setOpponent(whitePlayer);
 
@@ -154,10 +158,10 @@ namespace Othello
             //w przeciwnym przypadku naprzemienne uruchamianie graczy
             else
             {
-                searcher = new Searcher(tileSize,boardSize);
-               
-               for(int i=0;i<10;i++)//  while (whitePlayer.Points + blackPlayer.Points != (5 * boardSize * boardSize / 9)&&whitePlayer.Points!=0&&blackPlayer.Points!=0)
-               { /*  {
+                searcher = new Searcher(tileSize, boardSize);
+
+                // while (whitePlayer.Points + blackPlayer.Points != (5 * boardSize * boardSize / 9)&&whitePlayer.Points!=0&&blackPlayer.Points!=0)
+                /*  {
                      
                     Point point = new Point(-1, -1);
                     switch (turn)
@@ -186,23 +190,37 @@ namespace Othello
               
                      if(point.X>0&&point.Y>0)
                     Tile_Choose(point);*/
-                   Thread start = new Thread(Start);
-                   start.Start();
-                   start.Join();
-                   gamePanel.Refresh();
-                  // gamePanel.Refresh();
-                     //Thread.Sleep(1000);
-                
-                    
-                }
-                  //Thread start = new Thread(Start);
+
+
+                Start();
+                // black.Join();
+                //white.Join();
+                // gamePanel.Refresh();
                 //Thread.Sleep(1000);
-                 // updateGUI();
+
+
             }
 
-            
-
+            //Thread start = new Thread(Start);
+            //Thread.Sleep(1000);
+            // updateGUI();
         }
+
+        public void Start()
+        {
+            Thread black = new Thread(StartBlack);
+            Thread white = new Thread(StartWhite);
+            black.Start();
+            white.Start();
+            //black.Join();
+           // white.Join();
+           // while (whitePlayer.Points + blackPlayer.Points != (5 * boardSize * boardSize / 9) && whitePlayer.Points != 0 && blackPlayer.Points != 0)
+            {
+                
+            }
+        }
+
+
 
         private void Tile_Enter(object sender, EventArgs e)
         {
@@ -279,8 +297,8 @@ namespace Othello
             for (i = y + 1; i < boardSize; i++)
             {
                 if (Tiles[x, i].Tag.ToString() == "E" || Tiles[x, i].Tag.ToString() == "G" ||
-               ( Tiles[x, i].Tag.ToString() == tag &&! avail)) { result = false; break; }
-                 
+               (Tiles[x, i].Tag.ToString() == tag && !avail)) { result = false; break; }
+
                 if (Tiles[x, i].Tag.ToString() == opposite_tag)
                 {
                     avail = true;
@@ -295,7 +313,7 @@ namespace Othello
             for (i = y - 1; i > 0; i--)
             {
                 if (Tiles[x, i].Tag.ToString() == "E" || Tiles[x, i].Tag.ToString() == "G" ||
-               ( Tiles[x, i].Tag.ToString() == tag &&! avail)) { result = false; break; }
+               (Tiles[x, i].Tag.ToString() == tag && !avail)) { result = false; break; }
                 if (Tiles[x, i].Tag.ToString() == opposite_tag)
                 {
                     avail = true;
@@ -311,7 +329,7 @@ namespace Othello
             for (i = x + 1; i < boardSize; i++)
             {
                 if (Tiles[i, y].Tag.ToString() == "E" || Tiles[i, y].Tag.ToString() == "G" ||
-               (Tiles[i,y].Tag.ToString() == tag && !avail)) { result = false; break; }
+               (Tiles[i, y].Tag.ToString() == tag && !avail)) { result = false; break; }
                 if (Tiles[i, y].Tag.ToString() == opposite_tag)
                 {
                     avail = true;
@@ -326,7 +344,7 @@ namespace Othello
             for (i = x - 1; i > 0; i--)
             {
                 if (Tiles[i, y].Tag.ToString() == "E" || Tiles[i, y].Tag.ToString() == "G" ||
-               (Tiles[i,y].Tag.ToString() == tag && !avail)) { result = false; break; }
+               (Tiles[i, y].Tag.ToString() == tag && !avail)) { result = false; break; }
                 if (Tiles[i, y].Tag.ToString() == opposite_tag)
                 {
                     avail = true;
@@ -341,7 +359,7 @@ namespace Othello
             for (i = x + 1, j = y + 1; i < boardSize && j < boardSize; i++, j++)
             {
                 if (Tiles[i, j].Tag.ToString() == "E" || Tiles[i, j].Tag.ToString() == "G" ||
-               (Tiles[i,j].Tag.ToString() == tag && !avail)) { result = false; break; }
+               (Tiles[i, j].Tag.ToString() == tag && !avail)) { result = false; break; }
                 if (Tiles[i, j].Tag.ToString() == opposite_tag)
                 {
                     avail = true;
@@ -355,7 +373,7 @@ namespace Othello
             for (i = x + 1, j = y - 1; i < boardSize && j > 0; i++, j--)
             {
                 if (Tiles[i, j].Tag.ToString() == "E" || Tiles[i, j].Tag.ToString() == "G" ||
-               (Tiles[i,j].Tag.ToString() == tag && !avail)) { result = false; break; }
+               (Tiles[i, j].Tag.ToString() == tag && !avail)) { result = false; break; }
                 if (Tiles[i, j].Tag.ToString() == opposite_tag)
                 {
                     avail = true;
@@ -526,7 +544,7 @@ namespace Othello
             {
                 for (i = y + 1; i < y_down; i++)
                 {
-                    Reverse(Tiles[x,i], tag, opposite_tag, secondPlayer, currentPlayer, file);
+                    Reverse(Tiles[x, i], tag, opposite_tag, secondPlayer, currentPlayer, file);
 
                 }
             }
@@ -534,7 +552,7 @@ namespace Othello
             {
                 for (i = y - 1; i > y_up; i--)
                 {
-                    Reverse(Tiles[x,i], tag, opposite_tag, secondPlayer, currentPlayer, file);
+                    Reverse(Tiles[x, i], tag, opposite_tag, secondPlayer, currentPlayer, file);
 
                 }
             }
@@ -616,7 +634,7 @@ namespace Othello
         /// <param name="e"></param>
         private void Tile_Click(object sender, EventArgs e)
         {
-            
+
             string tag = turn == Turn.W ? "W" : "B";
             if (checkIfAvailable((Panel)sender, tag))
             {
@@ -639,7 +657,7 @@ namespace Othello
                     ((Panel)sender).BackgroundImage = (System.Drawing.Image)(Image.FromFile("BlackField.png"));
                     ((Panel)sender).Tag = "B";
                     ((Panel)sender).Click += null;
-                    ((Panel)sender).MouseEnter+= null;
+                    ((Panel)sender).MouseEnter += null;
                     ((Panel)sender).MouseLeave += null;
                     turn = Turn.W;
                     updateTiles(x, y, "B");
@@ -657,32 +675,32 @@ namespace Othello
         {
 
             string tag = turn == Turn.W ? "W" : "B";
-                 int x = point.X;
-                int y = point.Y;
-            Panel chosen_panel = Tiles[x,y];
-           
-            
-           
-                if (turn == Turn.W)
-                {
-                    chosen_panel.BackgroundImage = (System.Drawing.Image)(Image.FromFile("WField.png"));
-                    chosen_panel.Tag = "W";
-                
-                    turn = Turn.B;
-                    updateTiles(x, y, "W");
-                    whitePlayer.Points++;
-                }
-                else
-                {
-                    chosen_panel.BackgroundImage = (System.Drawing.Image)(Image.FromFile("BlackField.png"));
-                    chosen_panel.Tag = "B";
-                    turn = Turn.W;
-                    updateTiles(x, y, "B");
-                    blackPlayer.Points++;
-                }
+            int x = point.X;
+            int y = point.Y;
+            Panel chosen_panel = Tiles[x, y];
 
-                updateGUI();
-            
+
+
+            if (turn == Turn.W)
+            {
+                chosen_panel.BackgroundImage = (System.Drawing.Image)(Image.FromFile("WField.png"));
+                chosen_panel.Tag = "W";
+
+                turn = Turn.B;
+                updateTiles(x, y, "W");
+                whitePlayer.Points++;
+            }
+            else
+            {
+                chosen_panel.BackgroundImage = (System.Drawing.Image)(Image.FromFile("BlackField.png"));
+                chosen_panel.Tag = "B";
+                turn = Turn.W;
+                updateTiles(x, y, "B");
+                blackPlayer.Points++;
+            }
+
+            updateGUI();
+
         }
 
 
@@ -698,17 +716,22 @@ namespace Othello
         /// </summary>
         private void updateGUI()
         {
+            
             gamePanel.whitePoints.Text = whitePlayer.Points.ToString();
             gamePanel.blackPoints.Text = blackPlayer.Points.ToString();
-            if(turn == Turn.W)
+            if (turn == Turn.W)
             {
-                gamePanel.pictureBoxBlack.BorderStyle = BorderStyle.None;
-                gamePanel.pictureBoxWhite.BorderStyle = BorderStyle.Fixed3D;
-            } 
-            else     
+                gamePanel.whitePoints.BackColor = Color.Red;
+                gamePanel.blackPoints.BackColor = Color.Transparent;
+               // gamePanel.pictureBoxBlack.BorderStyle = BorderStyle.None;
+               // gamePanel.pictureBoxWhite.BorderStyle = BorderStyle.Fixed3D;
+            }
+            else
             {
-                gamePanel.pictureBoxBlack.BorderStyle = BorderStyle.Fixed3D;;
-                gamePanel.pictureBoxWhite.BorderStyle = BorderStyle.None;
+                gamePanel.whitePoints.BackColor = Color.Transparent;
+                gamePanel.blackPoints.BackColor = Color.Red;
+               // gamePanel.pictureBoxBlack.BorderStyle = BorderStyle.Fixed3D; ;
+               // gamePanel.pictureBoxWhite.BorderStyle = BorderStyle.None;
             }
 
             checkIfFinished();
@@ -717,47 +740,54 @@ namespace Othello
         /// <summary>
         /// Rozpoczecie automatycznej gry (naprzemienne ruchy przeciwnikow az do momentu zakonczenia gry)
         /// </summary>
-        public void Start()
+        public void StartBlack()
         {
-            
-            //  while (whitePlayer.Points + blackPlayer.Points != (5 * boardSize * boardSize / 9))
-            
-
-                Point point = new Point(-1, -1);
-                    switch (turn)
-                    {
-                        case Turn.W:
-                            // p = whitePlayer.Move(Tiles);
-                            point = searcher.simpleSearch(Tiles, whitePlayer, 1).Point;
-
-                            if (point != null)
-                            {
-                                MessageBox.Show("RESULT = " + point.X + ", " + point.Y);
-                            }
-
-                            break;
-                        case Turn.B:
-                            // p = blackPlayer.Move(Tiles);
-                            point = searcher.simpleSearch(Tiles, blackPlayer, 1).Point;
-                            if (point != null)
-                            {
-                                MessageBox.Show("RESULT = " + point.X + ", " + point.Y);
-                            }
-                            break;
-
-
-                    }
-                   if(point.X>0&&point.Y>0)
+              while (whitePlayer.Points + blackPlayer.Points != (5 * boardSize * boardSize / 9))
+              { Point point = new Point(-1, -1);
+          //  while (game_on)
+           // {
+                BlackSemaphore.WaitOne();
+               // if (turn == Turn.B)
+                Thread.Sleep(1000);
+                    point = searcher.simpleSearch(Tiles, blackPlayer, 1).Point;
+                if (point.X > 0 && point.Y > 0)
                     Tile_Choose(point);
-
-                
-                // Thread.Sleep(1000);
-
-                // OnPointChoose(p);
-
-
-                // }
+                updateGUI();
+               // if (MessageBox.Show("RESULT = " + point.X + ", " + point.Y) == DialogResult.OK)
+                {
+                    turn = Turn.W;
+                    WhiteSemaphore.Release();
+                }
+            }
+            game_on = false;
             
+
+        }
+
+
+        public void StartWhite()
+        {
+            //  while (whitePlayer.Points + blackPlayer.Points != (5 * boardSize * boardSize / 9))
+            Point point = new Point(-1, -1);
+           while (whitePlayer.Points + blackPlayer.Points != (5 * boardSize * boardSize / 9) && whitePlayer.Points != 0 && blackPlayer.Points != 0)
+            {
+                WhiteSemaphore.WaitOne();
+                Thread.Sleep(1000);
+                point = searcher.simpleSearch(Tiles, whitePlayer, 1).Point;
+
+                if (point.X > 0 && point.Y > 0)
+                    Tile_Choose(point);
+                    updateGUI();
+                //if (MessageBox.Show("RESULT = " + point.X + ", " + point.Y) == DialogResult.OK)
+                {
+                    turn = Turn.B;
+                    BlackSemaphore.Release();
+                    
+                }
+
+            }
+            game_on = false;
+
         }
 
         /// <summary>
