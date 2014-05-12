@@ -10,9 +10,9 @@ namespace Othello
 {
     class MoveAbility: Heuristic
     {
-        public override Panel Move(Panel[,] Tiles)
+        public override int Evaluate(Panel[,] board, Player p,int tileCount)
         {
-            return Tiles[0, 0];
+            return 0;
         }
 
     }

@@ -68,8 +68,8 @@ namespace Othello
         {
             WhiteSemaphore = new Semaphore(0, 1);
             BlackSemaphore = new Semaphore(1, 1);
-            whitePlayer = new Player(FuncW, "W");
-            blackPlayer = new Player(FuncB, "B");
+            whitePlayer = new Player(FuncW, "W",boardSize);
+            blackPlayer = new Player(FuncB, "B",boardSize);
             whitePlayer.setOpponent(blackPlayer);
             blackPlayer.setOpponent(whitePlayer);
 
@@ -746,7 +746,7 @@ namespace Othello
                 Point? point;
                 BlackSemaphore.WaitOne();
                 Thread.Sleep(1000);
-                point = (Point?)searcher.Search(Tiles, blackPlayer,Int16.MinValue,Int16.MaxValue,2).Point;
+                point = (Point?)searcher.Search(Tiles, blackPlayer,Int16.MinValue,Int16.MaxValue,1).Point;
                 //point = (Point)searcher.simpleSearch(Tiles, whitePlayer, 1).Point;
                 if (point != null)
                 {
@@ -773,7 +773,7 @@ namespace Othello
                 Point found_point = new Point(-1, -1);
                 Point? point;
                 Thread.Sleep(1000);
-                point =(Point?) searcher.Search(Tiles, whitePlayer,Int16.MinValue,Int16.MaxValue, 2).Point;
+                point =(Point?) searcher.Search(Tiles, whitePlayer,Int16.MinValue,Int16.MaxValue, 1).Point;
                // point = (Point)searcher.simpleSearch(Tiles, whitePlayer, 1).Point;
                 if (point != null)
                 {

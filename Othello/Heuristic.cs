@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -10,10 +11,10 @@ namespace Othello
 {
     class Heuristic
     {
-
-        public virtual Panel Move(Panel[,] Tiles)
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public virtual int Evaluate(Panel[,] board, Player p,int tileCount)
         {
-            return Tiles[0, 0];
+            return 0;
         }
 
     }

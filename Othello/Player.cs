@@ -10,29 +10,38 @@ namespace Othello
 {
     class Player
     {
+        private int tileCount;
         public string Color { get; set; }
         public string OpponentColor { get; set; }
         public Player Opponent;
         public int Points { get; set; }
+        private string heuristic;
 
         private Heuristic HeuristicFunc;
 
-        public Panel Move(Panel[,] Tiles)
+        public int Evaluate(Panel[,] Tiles)
         {
-            return HeuristicFunc.Move(Tiles);
+            return HeuristicFunc.Evaluate(Tiles, this, tileCount);
         }
 
+
+        /// <summary>
+        /// W tej chwili znamy przeciwnika, wiec takze jego heurystyke 
+        /// (TODO: czy zmienic na to zeby f heurytycznej zalozyc ze maja taka sama funkcje??)
+        /// </summary>
+        /// <param name="opponent"></param>
         public void setOpponent(Player opponent)
         {
-            Opponent = opponent;
+            Opponent = new Player(heuristic, opponent.Color, tileCount);
         }
 
-        public Player(string heuristic,string color)
+        public Player(string heuristic, string color, int tileCount)
         {
-            
+
             Color = color;
             OpponentColor = color == "W" ? "B" : "W";
-           
+            this.tileCount = tileCount;
+            this.heuristic = heuristic;
             switch (heuristic)
             {
                 case "MAX LICZBA PUNKTOW":
@@ -53,11 +62,10 @@ namespace Othello
                 case "MOZLIWOSC PODJECIA RUCHU":
                     HeuristicFunc = new MoveAbility();
                     break;
+                default:
+                    HeuristicFunc = new MaxPoints();
+                    break;
             }
         }
-
-      
-
-
     }
 }

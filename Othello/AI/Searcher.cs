@@ -46,34 +46,7 @@ namespace Othello.AI
                 }
             return black_panels.Capacity;
         }
-
-        int Evaluate(Panel[,] board, Player p)
-        {
-
-            List<Panel> white_panels = new List<Panel>();
-            List<Panel> black_panels = new List<Panel>();
-
-            for (int i = 0; i < tileCount; i++)
-                for (int j = 0; j < tileCount; j++)
-                {
-                    if (board[i, j].Tag.ToString() == "W")
-                        white_panels.Add(board[i, j]);
-                    else if (board[i, j].Tag.ToString() == "B")
-                        black_panels.Add(board[i, j]);
-
-                }
-            switch (p.Color)
-            {
-                case "W":
-                    return white_panels.Capacity - black_panels.Capacity;
-                case "B":
-                    return black_panels.Capacity - white_panels.Capacity;
-            }
-
-            return 0;
-        }
-
-
+      
 
         private bool isEndState(Panel[,] board)
         {
@@ -511,7 +484,7 @@ namespace Othello.AI
         {
             if (depth <= 0 || isEndState(board))
             {
-                return new SearchResult(null, Evaluate(board, player));
+                return new SearchResult(null, player.Evaluate(board));
             }
             else /* wiecej do sprawdzenia*/
             {
@@ -584,7 +557,7 @@ namespace Othello.AI
         {
             if (depth <= 0 || isEndState(board))
             {
-                return new SearchResult(null, Evaluate(board, player));
+                return new SearchResult(null, player.Evaluate(board));
             }
             else
             {
