@@ -10,7 +10,7 @@ namespace Othello.AI
     class SearchResult
     {
 
-        public Point Point { get; set; }
+        public Point? Point { get; set; }
         public int Score { get; set; }
         public SearchResult negate()
         {
@@ -20,6 +20,7 @@ namespace Othello.AI
         {
             if (point != null)
                 Point = (Point)point;
+            else Point = null;//new Point(-1, -1);
             Score = score;
         }
     }

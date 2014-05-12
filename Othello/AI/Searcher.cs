@@ -256,16 +256,20 @@ namespace Othello.AI
         {
             int x = p.X;
             int y = p.Y;
+            string opposite_tag = null;
 
             Panel panel = board[p.X, p.Y];
 
             if (color == "W")
             {
                 panel.Tag = "W";
+                opposite_tag = "B";
+
             }
             else
             {
                 panel.Tag = "B";
+                opposite_tag = "W";
             }
 
 
@@ -283,44 +287,71 @@ namespace Othello.AI
             int x_down_left = -1;
             int y_down_left = -1;
 
-
+         
+            //pion
+            bool avail = false;
             //pion
             for (i = y + 1; i < tileCount; i++)
             {
-                if (board[x, i].Tag.ToString() == "E") break;
-                if (board[x, i].Tag.ToString() == color)
+                if (board[x, i].Tag.ToString() == "E" || board[x, i].Tag.ToString() == "G" ||
+               (board[x, i].Tag.ToString() == color && !avail)) { break; }
+
+                if (board[x, i].Tag.ToString() == opposite_tag)
+                {
+                    avail = true;
+                }
+                else if (board[x, i].Tag.ToString() == color && avail)
                 {
                     y_down = i;
                     break;
                 }
             }
 
+            avail = false;
             for (i = y - 1; i > 0; i--)
             {
-                if (board[x, i].Tag.ToString() == "E") break;
-                if (board[x, i].Tag.ToString() == color)
+                if (board[x, i].Tag.ToString() == "E" || board[x, i].Tag.ToString() == "G" ||
+               (board[x, i].Tag.ToString() == color && !avail)) { break; }
+                if (board[x, i].Tag.ToString() == opposite_tag)
+                {
+                    avail = true;
+                }
+                else if (board[x, i].Tag.ToString() == color && avail)
                 {
                     y_up = i;
                     break;
                 }
             }
 
-
+            //poziom
+            avail = false;
             //poziom
             for (i = x + 1; i < tileCount; i++)
             {
-                if (board[i, y].Tag.ToString() == "E") break;
-                if (board[i, y].Tag.ToString() == color)
+                if (board[i, y].Tag.ToString() == "E" || board[i, y].Tag.ToString() == "G" ||
+               (board[i, y].Tag.ToString() == color && !avail)) { break; }
+                if (board[i, y].Tag.ToString() == opposite_tag)
+                {
+                    avail = true;
+                }
+                else if (board[i, y].Tag.ToString() == color && avail)
                 {
                     x_right = i;
                     break;
                 }
+
             }
 
+            avail = false;
             for (i = x - 1; i > 0; i--)
             {
-                if (board[i, y].Tag.ToString() == "E") break;
-                if (board[i, y].Tag.ToString() == color)
+                if (board[i, y].Tag.ToString() == "E" || board[i, y].Tag.ToString() == "G" ||
+               (board[i, y].Tag.ToString() == color && !avail)) { break; }
+                if (board[i, y].Tag.ToString() == opposite_tag)
+                {
+                    avail = true;
+                }
+                else if (board[i, y].Tag.ToString() == color && avail)
                 {
                     x_left = i;
                     break;
@@ -328,10 +359,16 @@ namespace Othello.AI
             }
             //skos
 
+            avail = false;
             for (i = x + 1, j = y + 1; i < tileCount && j < tileCount; i++, j++)
             {
-                if (board[i, j].Tag.ToString() == "E") break;
-                if (board[i, j].Tag.ToString() == color)
+                if (board[i, j].Tag.ToString() == "E" || board[i, j].Tag.ToString() == "G" ||
+               (board[i, j].Tag.ToString() == color && !avail)) { break; }
+                if (board[i, j].Tag.ToString() == opposite_tag)
+                {
+                    avail = true;
+                }
+                else if (board[i, j].Tag.ToString() == color && avail)
                 {
                     x_down_right = i;
                     y_down_right = j;
@@ -339,10 +376,16 @@ namespace Othello.AI
                 }
             }
 
+            avail = false;
             for (i = x + 1, j = y - 1; i < tileCount && j > 0; i++, j--)
             {
-                if (board[i, j].Tag.ToString() == "E") break;
-                if (board[i, j].Tag.ToString() == color)
+                if (board[i, j].Tag.ToString() == "E" || board[i, j].Tag.ToString() == "G" ||
+               (board[i, j].Tag.ToString() == color && !avail)) { break; }
+                if (board[i, j].Tag.ToString() == opposite_tag)
+                {
+                    avail = true;
+                }
+                else if (board[i, j].Tag.ToString() == color && avail)
                 {
                     x_up_right = i;
                     y_up_right = j;
@@ -350,27 +393,48 @@ namespace Othello.AI
                 }
             }
 
+            avail = false;
             for (i = x - 1, j = y + 1; i > 0 && j < tileCount; i--, j++)
             {
-                if (board[i, j].Tag.ToString() == "E") break;
-                if (board[i, j].Tag.ToString() == color)
+                if (board[i, j].Tag.ToString() == "E" || board[i, j].Tag.ToString() == "G" ||
+               (board[i, j].Tag.ToString() == color && !avail)) { break; }
+                if (board[i, j].Tag.ToString() == opposite_tag)
+                {
+                    avail = true;
+                }
+                if (board[i, j].Tag.ToString() == color && avail)
                 {
                     x_down_left = i;
                     y_down_left = j;
                     break;
                 }
             }
+            avail = false;
             for (i = x - 1, j = y - 1; i > 0 && j > 0; i--, j--)
             {
 
-                if (board[i, j].Tag.ToString() == "E") break;
-                else if (board[i, j].Tag.ToString() == color)
+                if (board[i, j].Tag.ToString() == "E" || board[i, j].Tag.ToString() == "G" ||
+               (board[i, j].Tag.ToString() == color && !avail)) { break; }
+                if (board[i, j].Tag.ToString() == opposite_tag)
+                {
+                    avail = true;
+                }
+                else if (board[i, j].Tag.ToString() == color && avail)
                 {
                     x_up_left = i;
                     y_up_left = j;
                     break;
                 }
             }
+
+            //   int key = (int)Enum.Parse(typeof(Turn), tag);
+            //  Turn opposite = (Turn)((key + 1) % 2);
+            //   String opposite_tag = opposite.ToString();
+            string file = color == "W" ? "WField.png" : "BlackField.png";
+
+
+
+
 
             //Reverse
             if (y_down >= 0)
@@ -484,7 +548,7 @@ namespace Othello.AI
 
                     foreach (Point p in possible_moves)
                     {
-                       // Panel[,] subBoard = new Panel[tileCount, tileCount];
+                        //przepisanie Panel zeby nie zmieniac wartosci na oryginale
                         for(int i=0;i<tileCount;i++)
                             for (int j = 0; j < tileCount; j++)
                             {
@@ -493,7 +557,7 @@ namespace Othello.AI
                                 subBoard[i, j].Tag = board[i, j].Tag;
 
                             }
-                           // (Panel[,])board.Clone();
+
                         makeMove(ref subBoard, p, player.Color);
                         int score = Search( subBoard, player.Opponent, -beta, -alpha, depth - 1).negate().Score;
                         if (alpha < score)
@@ -554,9 +618,7 @@ namespace Othello.AI
                 {
                     foreach (Point p in possible_moves)
                     {
-                        //Panel[,] 
-                      //  subBoard = (Panel[,])board.Clone();
-                      //  /*Panel[,] */
+                        //przepisanie Panel zeby nie zmieniac wartosci na oryginale
                     subBoard = new Panel[tileCount, tileCount];
                         for (int i = 0; i < tileCount; i++)
                             for (int j = 0; j < tileCount; j++)
@@ -575,7 +637,7 @@ namespace Othello.AI
 
                     }
                 }
-                return new SearchResult(best.Point,best.Score);
+                return best;
             }
 
         }

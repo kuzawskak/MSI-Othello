@@ -37,6 +37,7 @@
             this.pictureBoxBlack = new System.Windows.Forms.PictureBox();
             this.blackPoints = new System.Windows.Forms.Label();
             this.gameBoard = new System.Windows.Forms.Panel();
+            this.SUM = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -88,11 +89,11 @@
             this.splitContainer1.SplitterDistance = 287;
             this.splitContainer1.TabIndex = 0;
             // 
-            // pictureBox1
+            // pictureBoxWhite
             // 
-            this.pictureBoxWhite.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBoxWhite.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxWhite.Image")));
             this.pictureBoxWhite.Location = new System.Drawing.Point(30, 208);
-            this.pictureBoxWhite.Name = "pictureBox1";
+            this.pictureBoxWhite.Name = "pictureBoxWhite";
             this.pictureBoxWhite.Size = new System.Drawing.Size(50, 50);
             this.pictureBoxWhite.TabIndex = 0;
             this.pictureBoxWhite.TabStop = false;
@@ -120,16 +121,17 @@
             // 
             // splitContainer2.Panel2
             // 
+            this.splitContainer2.Panel2.Controls.Add(this.SUM);
             this.splitContainer2.Panel2.Controls.Add(this.blackPoints);
             this.splitContainer2.Size = new System.Drawing.Size(114, 591);
             this.splitContainer2.SplitterDistance = 296;
             this.splitContainer2.TabIndex = 1;
             // 
-            // pictureBox2
+            // pictureBoxBlack
             // 
-            this.pictureBoxBlack.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
+            this.pictureBoxBlack.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxBlack.Image")));
             this.pictureBoxBlack.Location = new System.Drawing.Point(30, 208);
-            this.pictureBoxBlack.Name = "pictureBox2";
+            this.pictureBoxBlack.Name = "pictureBoxBlack";
             this.pictureBoxBlack.Size = new System.Drawing.Size(50, 50);
             this.pictureBoxBlack.TabIndex = 0;
             this.pictureBoxBlack.TabStop = false;
@@ -153,6 +155,17 @@
             this.gameBoard.Name = "gameBoard";
             this.gameBoard.Size = new System.Drawing.Size(549, 591);
             this.gameBoard.TabIndex = 2;
+            // 
+            // SUM
+            // 
+            this.SUM.AutoSize = true;
+            this.SUM.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.SUM.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.SUM.Location = new System.Drawing.Point(42, 130);
+            this.SUM.Name = "SUM";
+            this.SUM.Size = new System.Drawing.Size(30, 31);
+            this.SUM.TabIndex = 1;
+            this.SUM.Text = "0";
             // 
             // Game_Panel
             // 
@@ -188,5 +201,6 @@
         public System.Windows.Forms.PictureBox pictureBoxBlack;
         public System.Windows.Forms.Label blackPoints;
         public System.Windows.Forms.Panel gameBoard;
+        public System.Windows.Forms.Label SUM;
     }
 }
