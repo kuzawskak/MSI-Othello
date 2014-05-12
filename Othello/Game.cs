@@ -746,7 +746,7 @@ namespace Othello
                 Point? point;
                 BlackSemaphore.WaitOne();
                 Thread.Sleep(1000);
-                point = (Point?)searcher.Search(Tiles, blackPlayer,Int16.MinValue,Int16.MaxValue,1).Point;
+                point = (Point?)searcher.Search(Tiles, blackPlayer,Int16.MinValue,Int16.MaxValue,2).Point;
                 //point = (Point)searcher.simpleSearch(Tiles, whitePlayer, 1).Point;
                 if (point != null)
                 {
@@ -773,7 +773,7 @@ namespace Othello
                 Point found_point = new Point(-1, -1);
                 Point? point;
                 Thread.Sleep(1000);
-                point =(Point) searcher.Search(Tiles, whitePlayer,Int16.MinValue,Int16.MaxValue, 1).Point;
+                point =(Point?) searcher.Search(Tiles, whitePlayer,Int16.MinValue,Int16.MaxValue, 2).Point;
                // point = (Point)searcher.simpleSearch(Tiles, whitePlayer, 1).Point;
                 if (point != null)
                 {

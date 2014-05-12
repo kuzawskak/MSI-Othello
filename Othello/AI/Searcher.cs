@@ -549,6 +549,7 @@ namespace Othello.AI
                     foreach (Point p in possible_moves)
                     {
                         //przepisanie Panel zeby nie zmieniac wartosci na oryginale
+                        subBoard = new Panel[tileCount, tileCount];
                         for(int i=0;i<tileCount;i++)
                             for (int j = 0; j < tileCount; j++)
                             {
